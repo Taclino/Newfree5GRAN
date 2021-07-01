@@ -44,6 +44,7 @@
 #include "../lib/rf/rf.h"
 #include "../lib/rf/usrp_b200/usrp_b200.h"
 #include "../lib/rf/usrp_x300/usrp_x300.h"
+#include "../PRACH/functions.h"
 #ifdef INCLUDE_N210_OPT
 #include "../lib/rf/usrp_usrp2/usrp_usrp2.h"
 #endif
@@ -287,24 +288,13 @@ void scan_bands(vector<free5GRAN::band> BANDS,
    * Create RF device depending on RF type.
    */
   double bandwidth = 30.72e6;
-  free5GRAN::rf* rf_device;
-  if (chosen_device.type == "b200") {
-    rf_device = new free5GRAN::usrp_b200(bandwidth, freq, gain, bandwidth,
-                                         chosen_device, &rf_buff);
-  } else if (chosen_device.type == "x300") {
-    rf_device = new free5GRAN::usrp_x300(bandwidth, freq, gain, bandwidth,
-                                         chosen_device, &rf_buff);
-  }
-#ifdef INCLUDE_N210_OPT
-  else if (chosen_device.type == "usrp2") {
-    rf_device = new free5GRAN::usrp_usrp2(bandwidth, freq, gain, bandwidth,
-                                          chosen_device, &rf_buff);
-  }
-#endif
-  else {
-    cout << "Unsupported RF device" << endl;
+  free5GRAN::usrp_b200* rf_device;
+  if (chosen_device.type != "b200") {
+    cout << "USRP_B210 IS THE ONLY ONE SUPPORTED WITH PRACH"<<endl;
     return;
   }
+    rf_device = new free5GRAN::usrp_b200(bandwidth, freq, gain, bandwidth,
+                                         chosen_device, &rf_buff);
 
   // Request bw because it may have been modified if requested bw not supported
   // by RF device.
