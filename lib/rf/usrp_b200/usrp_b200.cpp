@@ -302,4 +302,38 @@ void free5GRAN::usrp_b200::start_loopback_recv(bool& stop_signal,
   // Reset primary frame id
   primary_frame_id = 0;
   cout << "Finishing recv thread" << endl;
+
+
+}
+
+void free5GRAN::usrp_b200::start_transmitting(bool &stop_signal_called,std::vector<std::complex<float>> &buffs, int samps_to_send, uhd::time_spec_t time_to_send) {
+  cout << endl;
+
+  size_t samples_sent = 0;
+  size_t tmp = -1;
+  uhd::tx_metadata_t md;
+  md.start_of_burst = true;
+  md.end_of_burst = false;
+  md.has_time_spec = true;
+  md.time_spec = time_to_send;
+  uhd::stream_args_t stream_args("fc32", "sc16");  // complex floats
+  uhd::tx_streamer::sptr tx_stream = usrp->get_tx_stream(stream_args);
+
+  // send a single packet
+  while (not stop_signal_called) {
+    samples_sent = tx_stream->send(&buffs.front(), buffs.size(), md);
+    // cout << "SAMPLES SENT " << samples_sent << endl;
+    /*    if (true) {
+          printf ( "\rfirst sample sent is  %f             ",buffs[0].real() );
+          fflush(stdout);
+        }
+        tmp = samples_sent;
+        if(usrp->get_time_now() > time_to_send) {
+          md.has_time_spec = false;
+          md.start_of_burst = false; // Then it is not the beginning of the
+       transmission
+        }*/
+    md.has_time_spec = false;
+    md.start_of_burst = false;
+  }
 }

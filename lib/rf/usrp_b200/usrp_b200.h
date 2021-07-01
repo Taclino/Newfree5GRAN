@@ -46,6 +46,8 @@ class usrp_b200 : public rf {
   auto getGain() -> double override;
 
   void start_loopback_recv(bool& stop_signal, size_t buff_size) override;
+
+  void start_transmitting(bool& stop_signal_called, std::vector<std::complex<float>>& buffs, int samps_to_send, uhd::time_spec_t time_to_send);
 };
 }  // namespace free5GRAN
 
