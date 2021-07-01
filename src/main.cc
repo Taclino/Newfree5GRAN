@@ -606,6 +606,7 @@ phy_initialization:
       cout << "Decreasing gain to " << rf_device->getGain() << " dB" << endl;
     } else {
       cout << "MIB decoding failed, trying again in 0.05 sec" << endl;
+      cout.flush();
       usleep(50000);
     }
     // Retry to synchronize with cell
