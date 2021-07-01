@@ -288,7 +288,7 @@ void scan_bands(vector<free5GRAN::band> BANDS,
    * Create RF device depending on RF type.
    */
   double bandwidth = 30.72e6;
-  free5GRAN::usrp_b200* rf_device;
+  free5GRAN::rf* rf_device;
   if (chosen_device.type != "b200") {
     cout << "USRP_B210 IS THE ONLY ONE SUPPORTED WITH PRACH"<<endl;
     return;
